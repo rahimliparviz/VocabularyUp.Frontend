@@ -74,6 +74,14 @@ const Language = {
     delete: (id) => requests.del(`/language/${id}`),
 };
 
+const Phrase = {
+    // list: () => requests.get(`/language`),
+    // details: (id) => requests.get(`/employees/${id}`),
+    createWithTranslations: (phrase) => requests.post('/phrase/phrase-with-translation', phrase),
+    // update: (language) => requests.put(`/language/${language.id}`, language),
+    // delete: (id) => requests.del(`/language/${id}`),
+};
+
 
 // const Employee = {
 //     list: () => requests.get(`/employees`),
@@ -88,4 +96,5 @@ const Language = {
 
 export default {
     Language,
+    Phrase
 }
