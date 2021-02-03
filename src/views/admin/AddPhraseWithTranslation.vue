@@ -84,6 +84,7 @@ import PhraseWithLanguage from "../../components/form/phrase/PhraseWithLanguage"
 export default {
   data() {
     return {
+      errors: [],
       phrase: "",
       phraseLanguageId: null,
       translations: [],
@@ -105,7 +106,7 @@ export default {
       this.$set(language, "selected", !language.selected);
 
       if (language.selected) {
-        this.translations.push(language);
+        this.translations.push({ ...language, word: "fefe" });
       } else {
         this.translations.splice(this.translations.indexOf(language), 1);
       }
@@ -116,6 +117,11 @@ export default {
       });
       this.$set(translation, "word", e.word);
     },
+    reset() {
+      this.errors = [];
+      this.phrase = '';
+      this.$emit("reset");
+    },
 
     savePhrase() {
       let translations = this.translations.map((tr) => {
@@ -125,20 +131,14 @@ export default {
       let data = {
         phraseLanguageId: this.phraseLanguageId,
         phrase: this.phrase,
-        translations:translations,
-        // translations: "saa",
+        translations: translations,
       };
 
-      // let translations = [];
 
-      console.log(data);
 
       this.$agent.Phrase.createWithTranslations(data)
         .then(() => {
-          console.log("created");
-          // this.createMode = false;
-          // this.allLanguages();
-          // this.errors = [];
+          this.reset();
         })
         .catch((errorData) => {
           this.errors = errorData.data.errors;

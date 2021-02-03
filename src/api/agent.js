@@ -78,6 +78,9 @@ const Phrase = {
     // list: () => requests.get(`/language`),
     // details: (id) => requests.get(`/employees/${id}`),
     createWithTranslations: (phrase) => requests.post('/phrase/phrase-with-translation', phrase),
+    upload: (formData) => requests.post('/phrase/upload', formData, {
+        headers: { 'Content-type': 'multipart/form-data' }
+    }),
     // update: (language) => requests.put(`/language/${language.id}`, language),
     // delete: (id) => requests.del(`/language/${id}`),
 };

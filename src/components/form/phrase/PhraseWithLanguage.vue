@@ -8,7 +8,12 @@
 
     <div class="form-group col-md-6">
       <label for="inputCity">Translation</label>
-      <input type="text" class="form-control" v-model="word" @keyup="setTranslation"  />
+      <input
+        type="text"
+        class="form-control"
+        v-model="word"
+        @keyup="setTranslation"
+      />
     </div>
   </div>
 </template>
@@ -23,10 +28,19 @@ export default {
       word: "",
     };
   },
+ created: function() {
+    this.$parent.$on('reset', this.resetWord);
+  },
   methods: {
     setTranslation() {
-      this.$emit("on-translation-adding", {word:this.word,languageId:this.language.id});
+      this.$emit("on-translation-adding", {
+        word: this.word,
+        languageId: this.language.id,
+      });
     },
+    resetWord(){
+        this.word="";
+    }
   },
 };
 </script>

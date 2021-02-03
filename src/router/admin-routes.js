@@ -1,6 +1,8 @@
 import Home from '../views/Home.vue'
 import Language from '../views/admin/Language.vue'
-import PhraseWithTranslation from '../views/admin/PhraseWithTranslation.vue'
+import AddPhraseWithTranslation from '../views/admin/AddPhraseWithTranslation.vue'
+import ListPhraseWithTranslation from '../views/admin/Phrase/ListPhraseWithTranslation.vue'
+import UserAuth from '../views/auth/UserAuth.vue'
 
 const  adminRoutes = [
     {
@@ -14,9 +16,20 @@ const  adminRoutes = [
         component: Language
     },
     {
-        path: '/phrase-translation',
+        path: '/add-phrase-translation',
+        name: 'Add phrase',
+        component: AddPhraseWithTranslation
+    },
+    {
+        path: '/phrases',
         name: 'Phrases',
-        component: PhraseWithTranslation
+        component: ListPhraseWithTranslation
+    },
+    // TODO - user routes e cekir asagidaki routu
+    {
+        path: '/auth',
+        name: 'Auth',
+        component: UserAuth
     },
     {
         path: '/about',
