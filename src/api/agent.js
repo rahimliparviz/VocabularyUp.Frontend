@@ -7,13 +7,13 @@ import camelcaseKeys from 'camelcase-keys'
 // axios.defaults.baseURL ='/api';
 axios.defaults.baseURL ='http://localhost:5000/api';
 
-// axios.interceptors.request.use((config) => {
-//     const token = window.localStorage.getItem('token');
-//     if (token) config.headers.Authorization = `Bearer ${token}`;
-//     return config;
-// }, error => {
-//     return Promise.reject(error);
-// })
+axios.interceptors.request.use((config) => {
+    const token = window.localStorage.getItem('token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+}, error => {
+    return Promise.reject(error);
+})
 
 
 axios.interceptors.response.use(undefined, error => {
@@ -85,6 +85,18 @@ const Phrase = {
     // delete: (id) => requests.del(`/language/${id}`),
 };
 
+const Auth = {
+    // list: () => requests.get(`/language`),
+    // details: (id) => requests.get(`/employees/${id}`),
+    login: (creds) => requests.post('/auth/login', creds),
+    register: (creds) => requests.post('/auth/register', creds),
+    // upload: (formData) => requests.post('/phrase/upload', formData, {
+    //     headers: { 'Content-type': 'multipart/form-data' }
+    // }),
+    // update: (language) => requests.put(`/language/${language.id}`, language),
+    // delete: (id) => requests.del(`/language/${id}`),
+};
+
 
 // const Employee = {
 //     list: () => requests.get(`/employees`),
@@ -99,5 +111,6 @@ const Phrase = {
 
 export default {
     Language,
-    Phrase
+    Phrase,
+    Auth
 }

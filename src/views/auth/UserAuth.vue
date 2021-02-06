@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <base-dialog :show="!!error" title="An error occurred"> -->
     <base-dialog :show="!!error" title="An error occurred" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
@@ -31,7 +32,6 @@
           <base-button
             type="button"
             mode="flat"
-            @click="doThis"
             @switchAuthMode="switchAuthMode"
             >{{ switchModeButtonCaption }}</base-button
           >
@@ -45,8 +45,8 @@
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: "test@test.com",
+      password: "Pa$$w0rd",
       formIsValid: true,
       mode: "login",
       isLoading: false,
@@ -94,7 +94,7 @@ export default {
         } else {
           await this.$store.dispatch("signup", actionPayload);
         }
-        const redirectUrl = "/" + (this.$route.query.redirect || "coaches");
+        const redirectUrl = "/" + (this.$route.query.redirect || "");
         this.$router.replace(redirectUrl);
       } catch (err) {
         this.error = err.message || "Failed to authenticate, try later.";

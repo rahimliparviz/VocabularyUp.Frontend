@@ -19,6 +19,24 @@ export default {
   components:{
     Navbar,
     Sidebar
+  },
+  computed:{
+    didAutoLogout(){
+      return this.$store.getters.didAutoLogout;
+    }
+  },
+  created() {
+    //refresh zamani store daki authenticationla bagli datalar resetlernir
+    //tryLogin metodu ise localstoragde saxlanilan token ve user haqda datalar ile
+    //store u berpa edir
+    this.$store.dispatch('tryLogin');
+  },
+ watch: {
+    didAutoLogout(curValue) {
+      if (curValue) {
+        this.$router.replace('/auth');
+      }
+    }
   }
 }
 </script>
