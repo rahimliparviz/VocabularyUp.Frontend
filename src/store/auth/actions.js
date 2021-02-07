@@ -1,4 +1,6 @@
 import agent from '../../api/agent'
+import jwt_decode from "jwt-decode";
+
 let timer;
 
 export default {
@@ -33,15 +35,42 @@ export default {
     //   })
     // });
 
-    let response;
     try {
-       response = mode === 'signup' ?
-        await agent.Auth.register(payload) 
+     const response = mode === 'signup' ?
+        await agent.Auth.register(payload)
         :
         await agent.Auth.login(payload);
+
+
+
+
+
+      
+      let decadedJWT =  jwt_decode(response.token)
+
+      const expiresIn = +(decadedJWT.exp - decadedJWT.iat) * 1000;
+      const expirationDate = new Date().getTime() + expiresIn;
+
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('userId', response.username);
+      localStorage.setItem('tokenExpiration', expirationDate);
+
+      timer = setTimeout(function () {
+        context.dispatch('autoLogout');
+      }, expiresIn);
+
+      context.commit('setUser', {
+        token: response.token,
+        userId: response.username
+      });
+
+
+
+
+
     } catch (error) {
       console.log(error)
-   
+
       throw new Error(
         error.statusText || Object.values(error.data.errors)[0][0] || 'Failed to authenticate. Check your login data.'
       );
@@ -53,32 +82,7 @@ export default {
 
 
 
-
-    // console.log(response)
-    // const responseData = await response.json();
-
-    // if (!response.ok) {
-    //   const error = new Error(
-    //     'Failed to authenticate. Check your login data.'
-    //   );
-    //   throw error;
-    // }
-
-    const expiresIn = +response.expiresIn * 1000;
-    const expirationDate = new Date().getTime() + expiresIn;
-
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('userId', response.username);
-    localStorage.setItem('tokenExpiration', expirationDate);
-
-    timer = setTimeout(function () {
-      context.dispatch('autoLogout');
-    }, expiresIn);
-
-    context.commit('setUser', {
-      token: response.token,
-      userId: response.username
-    });
+   
   },
   tryLogin(context) {
     const token = localStorage.getItem('token');

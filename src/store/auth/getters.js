@@ -6,7 +6,8 @@ export default {
     return state.token;
   },
   isAuthenticated(state) {
-    return !!state.token;
+     !!state.token;
+    return !!localStorage.getItem('token');
   },
   didAutoLogout(state) {
     return state.didAutoLogout;

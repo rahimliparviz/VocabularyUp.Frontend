@@ -8,28 +8,33 @@ const  adminRoutes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: Home,
+        meta: { requiresAuth: true }
     },
     {
         path: '/languages',
         name: 'Language',
-        component: Language
+        component: Language,
+        meta: { requiresAuth: true }
     },
     {
         path: '/add-phrase-translation',
         name: 'Add phrase',
-        component: AddPhraseWithTranslation
+        component: AddPhraseWithTranslation,
+        meta: { requiresAuth: true }
     },
     {
         path: '/phrases',
         name: 'Phrases',
-        component: ListPhraseWithTranslation
+        component: ListPhraseWithTranslation,
+        meta: { requiresAuth: true }
     },
     // TODO - user routes e cekir asagidaki routu
     {
         path: '/auth',
         name: 'Auth',
-        component: UserAuth
+        component: UserAuth,
+        meta: { requiresUnauth: true } 
     },
     {
         path: '/about',
@@ -40,5 +45,18 @@ const  adminRoutes = [
         component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
 ]
+
+
+// router.beforeEach(function (to, _, next) {
+//     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+//         next('/auth');
+//     } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
+//         next('/');
+//     } else {
+//         next();
+//     }
+// });
+
+
 
 export default adminRoutes;

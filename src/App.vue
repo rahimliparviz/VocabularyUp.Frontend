@@ -28,7 +28,7 @@ export default {
   created() {
     //refresh zamani store daki authenticationla bagli datalar resetlernir
     //tryLogin metodu ise localstoragde saxlanilan token ve user haqda datalar ile
-    //store u berpa edir
+    //store u berpa edi
     this.$store.dispatch('tryLogin');
   },
  watch: {
