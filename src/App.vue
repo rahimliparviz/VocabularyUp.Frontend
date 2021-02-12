@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <sidebar/>
+    <sidebar v-if="isAuthenticated"/>
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
-             <navbar/>
+             <navbar v-if="isAuthenticated" />
             <div class="container">
               <router-view/>
             </div>
@@ -23,7 +23,10 @@ export default {
   computed:{
     didAutoLogout(){
       return this.$store.getters.didAutoLogout;
-    }
+    },
+    isAuthenticated(){
+      return this.$store.getters.isAuthenticated
+      }
   },
   created() {
     //refresh zamani store daki authenticationla bagli datalar resetlernir
@@ -37,7 +40,7 @@ export default {
         this.$router.replace('/auth');
       }
     }
-  }
+  },
 }
 </script>
 

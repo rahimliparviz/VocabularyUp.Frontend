@@ -36,7 +36,7 @@ export default {
     // });
 
     try {
-     const response = mode === 'signup' ?
+      const response = mode === 'signup' ?
         await agent.Auth.register(payload)
         :
         await agent.Auth.login(payload);
@@ -45,10 +45,11 @@ export default {
 
 
 
-      
-      let decadedJWT =  jwt_decode(response.token)
 
-      const expiresIn = +(decadedJWT.exp - decadedJWT.iat) * 1000;
+      let decodedJWT = jwt_decode(response.token)
+      console.log(response, decodedJWT)
+
+      const expiresIn = +(decodedJWT.exp - decodedJWT.iat) * 1000;
       const expirationDate = new Date().getTime() + expiresIn;
 
       localStorage.setItem('token', response.token);
@@ -61,7 +62,8 @@ export default {
 
       context.commit('setUser', {
         token: response.token,
-        userId: response.username
+        userId: response.username,
+        role: decodedJWT.role
       });
 
 
@@ -82,12 +84,15 @@ export default {
 
 
 
-   
+
   },
   tryLogin(context) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const tokenExpiration = localStorage.getItem('tokenExpiration');
+
+    let decodedJWT = jwt_decode(token)
+
 
     const expiresIn = +tokenExpiration - new Date().getTime();
 
@@ -102,7 +107,8 @@ export default {
     if (token && userId) {
       context.commit('setUser', {
         token: token,
-        userId: userId
+        userId: userId,
+        role: decodedJWT.role
       });
     }
   },
@@ -115,7 +121,8 @@ export default {
 
     context.commit('setUser', {
       token: null,
-      userId: null
+      userId: null,
+      role: null
     });
   },
   autoLogout(context) {
