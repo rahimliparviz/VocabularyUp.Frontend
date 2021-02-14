@@ -28,7 +28,8 @@
 
     <!-- Nav Item - Charts -->
     <li class="nav-item" v-for="route in routes" :key="route.name">
-      <router-link :to="{name:route.name,params:{...route.meta.defaultParams}}" class="nav-link"><span>{{ route.name }}</span></router-link>
+      <!-- <router-link :to="{name:route.name,params:{...route.meta.defaultParams}}" class="nav-link"><span>{{ route.name }}</span></router-link> -->
+      <router-link :to="{name:route.name}" class="nav-link"><span>{{ route.name }}</span></router-link>
     </li>
 
     <!-- Divider -->
@@ -54,7 +55,7 @@ export default {
   computed: {
     routes() {
       let role = this.$store.getters.role;
-      console.log(role);
+      // console.log(role);
       return role == "admin"
         ? [...adminRoutes, ...commonRoutes]
         : [...userRoutes, ...commonRoutes];

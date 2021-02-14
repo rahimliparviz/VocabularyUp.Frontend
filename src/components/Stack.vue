@@ -367,6 +367,7 @@ components: { StackCard },
   background: #fff;
   height: 100%;
   width: 100%;
+  border:1px solid orange;
   border-radius: 4px;
   text-align: center;
   overflow: hidden;

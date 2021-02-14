@@ -98,13 +98,14 @@ const Auth = {
 };
 
 
-// const Employee = {
-//     list: () => requests.get(`/employees`),
-//     details: (id) => requests.get(`/employees/${id}`),
-//     create: (employee) => requests.post('/employees', employee),
-//     update: (formData) =>requests.put(`/employees/${formData.get('id')}`, formData),
-//     delete: (id) => requests.del(`/employees/${id}`),
-//   };
+const User = {
+    profile: (payload) => requests.post(`/user/user-profile`, payload),
+    phrases: (params) => requests.getWithParams(`/user/user-phrases`,params),
+    // details: (id) => requests.get(`/employees/${id}`),
+    // create: (employee) => requests.post('/employees', employee),
+    // update: (formData) =>requests.put(`/employees/${formData.get('id')}`, formData),
+    // delete: (id) => requests.del(`/employees/${id}`),
+  };
 
 
 
@@ -112,5 +113,6 @@ const Auth = {
 export default {
     Language,
     Phrase,
-    Auth
+    Auth,
+    User
 }

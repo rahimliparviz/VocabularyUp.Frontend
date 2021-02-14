@@ -1,5 +1,5 @@
-<!--
-<template>
+
+<!--<template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
@@ -62,28 +62,6 @@ export default {
           phrase: "Horse",
           translation: "At",
         },
-        // {
-        //   html:
-        //     '<img src="https://images.unsplash.com/photo-1610874355346-02f89d5f3315?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1400&q=80" alt="01">',
-        // },
-        // {
-        //   html: '<img src="src/img/2.png" alt="02">',
-        // },
-        // {
-        //   html: '<img src="src/img/3.png" alt="03">',
-        // },
-        // {
-        //   html: '<img src="src/img/4.png" alt="04">',
-        // },
-        // {
-        //   html: '<img src="src/img/5.png" alt="05">',
-        // },
-        // {
-        //   html: '<img src="src/img/6.png" alt="06">',
-        // },
-        // {
-        //   html: '<img src="src/img/7.png" alt="07">',
-        // },
       ];
     }, 2000);
   },
@@ -183,3 +161,6 @@ export default {
   display: block;
 }
 </style>
+
+
+

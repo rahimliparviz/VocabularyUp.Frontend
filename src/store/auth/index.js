@@ -7,7 +7,7 @@ export default {
     return {
       userId: null,
       token: null,
-      role:null,
+      role:"user",
       didAutoLogout: false
     };
   },

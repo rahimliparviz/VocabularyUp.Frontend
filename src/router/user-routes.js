@@ -9,7 +9,7 @@ const userRoutes = [
     {
         path: '/practice/:type?',
         name: 'Practice',
-        meta: { requiresAuth: true, defaultParams: { type: "tftru"} },
+        meta: { requiresAuth: true, defaultParams: { type: "default"} },
         component: () => import('../views/Practice.vue')
     }
 ]
