@@ -47,7 +47,6 @@ export default {
 
 
       let decodedJWT = jwt_decode(response.token)
-      console.log(response, decodedJWT)
 
       const expiresIn = +(decodedJWT.exp - decodedJWT.iat) * 1000;
       const expirationDate = new Date().getTime() + expiresIn;

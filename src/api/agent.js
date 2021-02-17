@@ -100,7 +100,8 @@ const Auth = {
 
 const User = {
     profile: (payload) => requests.post(`/user/user-profile`, payload),
-    phrases: (params) => requests.getWithParams(`/user/user-phrases`,params),
+    userPhrases: (params) => requests.getWithParams(`/user/user-phrases`,params),
+    phrasesToLearn: (params) => requests.getWithParams('/user/phrases-to-learn',params)
     // details: (id) => requests.get(`/employees/${id}`),
     // create: (employee) => requests.post('/employees', employee),
     // update: (formData) =>requests.put(`/employees/${formData.get('id')}`, formData),

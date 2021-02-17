@@ -1,6 +1,11 @@
 <template>
   <div class="mid-center">
     <h1>{{ type }}</h1>
+    <router-link
+        :to="{ name: 'Profile' }"
+      >
+        Back to Profile</router-link
+      >
 
     <div class="stack-wrapper">
       <stack ref="stack" :pages="phrasesList" :stackinit="stackinit"></stack>
@@ -24,7 +29,7 @@ export default {
   data() {
     return {
       type: "",
-      phrasesList: [{ phrase: "Word", ranslation: "Translation" }],
+      phrasesList: [],
       stackinit: {
         visible: 3,
       },
@@ -39,16 +44,37 @@ export default {
       this.$refs.stack.$emit("next");
     },
     getPhrases(filter) {
-      // TODO fromn= ve to languagleri user daxil etsin
-      let params = {
-        FromLanguageId: "167914a7-1ce0-4b93-8734-3e67283c0faf",
-        ToLanguageId: "6405b79c-1b8c-4135-a7f2-129cb16030ca",
-        Filter: filter,
-      };
-
-      this.$agent.User.phrases(params).then((data) => {
-        this.phrasesList = data;
-      });
+      let userPhrases = this.$store.getters.userPhrases;
+      switch (filter) {
+        case "known":
+          this.phrasesList = userPhrases.filter((phrase) => {
+            if (phrase.numberOfRemainingRepetitions == 0) {
+              return phrase;
+            }
+          });
+          break;
+        case "forgotten":
+          console.log(2);
+          this.phrasesList = userPhrases.filter((phrase) => {
+            if (phrase.numberOfRemainingRepetitions > 0) {
+              return phrase;
+            }
+          });
+          break;
+        case "file":
+          this.phrasesList = this.$store.getters.filePhrases;
+          break;
+        default:{
+          let params = {
+            FromLanguageId: this.$store.getters.fromLanguageId,
+            ToLanguageId: this.$store.getters.toLanguageId,
+            PhrasesCount: 15,
+          };
+          this.$agent.User.phrasesToLearn(params).then((data) => {
+            this.phrasesList = data;
+          });
+        }
+      }
     },
   },
   created() {

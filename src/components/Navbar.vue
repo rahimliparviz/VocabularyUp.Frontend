@@ -30,6 +30,38 @@
       </div>
     </form>
 
+    <select
+      style="width:100px"
+      class="form-control"
+      v-model="fromLanguageId"
+      @change="fromLanguageChanged"
+    >
+      <option
+        v-for="language in languages"
+        :key="language.id"
+        v-bind:value="language.id"
+      >
+        {{ language.name }}
+      </option>
+    </select>
+    -
+
+      <select
+      style="width: 100px"
+      class="form-control"
+      v-model="toLanguageId"
+      @change="toLanguageChanged"
+
+    >
+      <option
+        v-for="language in filteredLanguages"
+        :key="language.id"
+        v-bind:value="language.id"
+      >
+        {{ language.name }}
+      </option>
+    </select>
+
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
       <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -71,7 +103,7 @@
 
       <!-- Nav Item - Alerts -->
       <li class="nav-item dropdown no-arrow mx-1">
-        <span @click="logout" style="cursor:pointer">Logout</span>
+        <span @click="logout" style="cursor: pointer">Logout</span>
         <!-- Dropdown - Alerts -->
         <div
           class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -228,9 +260,9 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{
-            userName 
-          }} - {{role}}</span>
+          <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+            >{{ userName }} - {{ role }}</span
+          >
         </a>
       </li>
     </ul>
@@ -238,20 +270,62 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      // fromLanguageId: "167914a7-1ce0-4b93-8734-3e67283c0faf",
+      // toLanguageId:"6405b79c-1b8c-4135-a7f2-129cb16030ca",
+      fromLanguageId:  this.$store.getters.fromLanguageId,
+      toLanguageId: this.$store.getters.toLanguageId,
+      languages: [],
+    };
+  },
   computed: {
     userName() {
       return this.$store.getters.userId;
     },
-	role() {
-		return this.$store.getters.role;
-	}
+    role() {
+      return this.$store.getters.role;
+    },
+
+// fromLanguageId(){
+//    return this.$store.getters.fromLanguageId;
+// },
+// toLanguageId(){
+//    return this.$store.getters.toLanguageId;
+// },
+     filteredLanguages() {
+      return this.languages.filter((language) => {
+        // if (language.id != this.fromLanguageId ) {
+          return language.name.match(this.languageFilter);
+        // }
+      });
+    },
   },
   methods: {
-    logout(){
-      this.$store.dispatch('logout');
-      this.$router.replace('/auth');
+    logout() {
+      this.$store.dispatch("logout");
+      this.$router.replace("/auth");
+    },
+    getLanguages() {
+      this.$agent.Language.list()
+        .then((data) => {
+          this.languages = data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
+        // this.$store.dispatch("signup", actionPayload);
+    },
+    fromLanguageChanged(){
+      this.$store.dispatch("setFromLanguageId", {fromLanguageId:this.fromLanguageId});
+    },
+    toLanguageChanged(){
+      this.$store.dispatch("setToLanguageId", {toLanguageId:this.toLanguageId});
     }
+  },
+  created() {
+    this.getLanguages();
   },
 };
 </script>

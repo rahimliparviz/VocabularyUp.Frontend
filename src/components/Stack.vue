@@ -16,8 +16,7 @@
       @webkit-transition-end="onTransitionEnd(index)"
       @transitionend="onTransitionEnd(index)"
     >
-      <!-- <div v-html="item.html"></div> -->
-      <!-- <div> <span>Salam</span></div> -->
+
       <div> <stack-card :phrase="item.phrase" :translation="item.translation"/></div>
       
     </li>
@@ -27,7 +26,7 @@
 import detectPrefixes from "../helpers/detect-prefixes.js";
 import StackCard from '../components/StackCard.vue'
 export default {
-components: { StackCard },
+ components: { StackCard },
   props: {
     stackinit: {
       type: Object,
@@ -44,6 +43,8 @@ components: { StackCard },
   },
   data() {
     return {
+      offsetWidth:null,
+      offsetHeight:null,
       basicdata: {
         start: {},
         end: {},
@@ -69,11 +70,15 @@ components: { StackCard },
       },
     };
   },
+  created() {
+    console.log(this.pages)
+  },
   computed: {
     // 划出面积比例
     offsetRatio() {
-      let width = this.$el.offsetWidth;
-      let height = this.$el.offsetHeight;
+      // console.log(this.offsetWidth)
+      let width = this.offsetWidth;
+      let height = this.offsetHeight;
       let offsetWidth = width - Math.abs(this.temporaryData.poswidth);
       let offsetHeight = height - Math.abs(this.temporaryData.posheight);
       let ratio = 1 - (offsetWidth * offsetHeight) / (width * height) || 0;
@@ -98,6 +103,8 @@ components: { StackCard },
     document.addEventListener("touchmove", (e) => {
       e.preventDefault();
     });
+    this.offsetWidth = this.$el.offsetWidth;
+    this.offsetHeight = this.$el.offsetHeight;
   },
   methods: {
     touchstart(e) {

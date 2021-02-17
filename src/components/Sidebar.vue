@@ -2,6 +2,7 @@
   <ul
     class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled"
     id="accordionSidebar"
+    v-if="isAdmin"
   >
     <!-- Sidebar - Brand -->
 
@@ -28,8 +29,9 @@
 
     <!-- Nav Item - Charts -->
     <li class="nav-item" v-for="route in routes" :key="route.name">
-      <!-- <router-link :to="{name:route.name,params:{...route.meta.defaultParams}}" class="nav-link"><span>{{ route.name }}</span></router-link> -->
-      <router-link :to="{name:route.name}" class="nav-link"><span>{{ route.name }}</span></router-link>
+      <router-link :to="{ name: route.name }" class="nav-link"
+        ><span>{{ route.name }}</span></router-link
+      >
     </li>
 
     <!-- Divider -->
@@ -43,34 +45,27 @@
 <script>
 import adminRoutes from "../router/admin-routes";
 import commonRoutes from "../router/common-routes";
-import userRoutes from "../router/user-routes";
 
 export default {
-  data() {
-    return {
-      // role:this.$store.getters.role,
-      // routes:[]
-    };
-  },
   computed: {
     routes() {
-      let role = this.$store.getters.role;
       // console.log(role);
-      return role == "admin"
-        ? [...adminRoutes, ...commonRoutes]
-        : [...userRoutes, ...commonRoutes];
+      return [...adminRoutes, ...commonRoutes];
       // this.routes = routes;
-	},
-	role() {
-		return this.$store.getters.role;
-	}
+    },
+    isAdmin(){
+       return this.$store.getters.role == "admin";
+    },
+    role() {
+      return this.$store.getters.role;
+    },
   },
   watch: {
     role(curValue) {
       if (curValue) {
         console.log(curValue);
       }
-    }
+    },
   },
 
   // created() {

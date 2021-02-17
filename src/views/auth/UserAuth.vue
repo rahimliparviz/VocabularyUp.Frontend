@@ -94,7 +94,11 @@ export default {
         } else {
           await this.$store.dispatch("signup", actionPayload);
         }
-        const redirectUrl = "/" + (this.$route.query.redirect || "");
+
+      let userRole = this.$store.getters.role;
+      let baseRoute = userRole == "admin" ? "/" : "/profile";
+
+        const redirectUrl = baseRoute + (this.$route.query.redirect || "");
         this.$router.replace(redirectUrl);
       } catch (err) {
         this.error = err.message || "Failed to authenticate, try later.";
