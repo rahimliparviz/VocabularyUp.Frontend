@@ -50,6 +50,11 @@ export default {
 	display: flex
 }
 
+#content{
+  height: 100vh;
+  background: darkseagreen;
+}
+
 #app #content-wrapper {
 	background-color: #f8f9fc;
 	width: 100%;

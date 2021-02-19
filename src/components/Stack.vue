@@ -17,7 +17,7 @@
       @transitionend="onTransitionEnd(index)"
     >
 
-      <div> <stack-card :phrase="item.phrase" :translation="item.translation"/></div>
+      <div> <stack-card @next="next" :phrase="item.phrase" :phraseId="item.phraseId" :translation="item.translation"/></div>
       
     </li>
   </ul>

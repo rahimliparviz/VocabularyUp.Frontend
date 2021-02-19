@@ -101,9 +101,10 @@ const Auth = {
 const User = {
     profile: (payload) => requests.post(`/user/user-profile`, payload),
     userPhrases: (params) => requests.getWithParams(`/user/user-phrases`,params),
-    phrasesToLearn: (params) => requests.getWithParams('/user/phrases-to-learn',params)
+    phrasesToLearn: (params) => requests.getWithParams('/user/phrases-to-learn',params),
     // details: (id) => requests.get(`/employees/${id}`),
-    // create: (employee) => requests.post('/employees', employee),
+    forgetTranslation: (data) => requests.post('/user/forget-translation', data),
+    learnPhrase: (data) => requests.post('/user/learn-phrase', data),
     // update: (formData) =>requests.put(`/employees/${formData.get('id')}`, formData),
     // delete: (id) => requests.del(`/employees/${id}`),
   };

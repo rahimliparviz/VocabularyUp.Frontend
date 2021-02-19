@@ -1,15 +1,82 @@
 <template>
-  <span class="badge" :class="type">
-    <h2>{{ phrase }}</h2>
-    <h1>{{translation}}</h1>
-  </span>
+  <div>
+    <span>{{ type }}</span>
+    <div class="alert alert-primary" role="alert">
+      {{ phrase }} -- {{ phraseId }}
+    </div>
+    <div v-if="showTranslation" class="alert alert-success" role="alert">
+      {{ translation }}
+    </div>
+    <button v-if="!showTranslation && type != 'known'" class="btn btn-success">
+      I know
+    </button>
+    <button
+      v-if="!showTranslation"
+      @click="shorTranslation"
+      class="btn btn-warning"
+    >
+      Show
+    </button>
+
+    <div v-if="showTranslation" class="alert alert-info" role="alert">
+      {{ message }}
+    </div>
+    <button
+      v-if="showTranslation"
+      @click="practiceAndNextPhrase"
+      class="btn btn-warning"
+    >
+      Next
+    </button>
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['type', 'phrase','translation'],
+  props: ["phrase", "translation", "phraseId"],
+  data() {
+    return {
+      type: "",
+      message: "",
+      numberOfRemainingRepetitions: 0,
+      showTranslation: false,
+    };
+  },
+  methods: {
+    shorTranslation() {
+      this.showTranslation = true;
 
-}
+      let data = {
+        FromLanguageId: this.$store.getters.fromLanguageId,
+        ToLanguageId: this.$store.getters.toLanguageId,
+        PhraseId: this.phraseId,
+      };
+
+      this.$agent.User.forgetTranslation(data).then((response) => {
+        if (response.isSuccess) {
+          this.message = response.message;
+          this.numberOfRemainingRepetitions =
+            response.numberOfRemainingRepetitions;
+          this.showTranslation = true;
+        }
+      });
+    },
+    practiceAndNextPhrase() {
+      this.showTranslation = false;
+
+      let payload = {
+        phraseId: this.phraseId,
+        numberOfRemainingRepetitions: this.numberOfRemainingRepetitions,
+      };
+      this.$store.dispatch("forgetTranslation", payload);
+
+      this.$emit("next");
+    },
+  },
+  created() {
+    this.type = this.$route.params.type;
+  },
+};
 </script>
 
 <style scoped>

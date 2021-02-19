@@ -71,7 +71,6 @@ export default {
       };
 
       this.$agent.User.userPhrases(params).then((data) => {
-        console.log(data);
         this.allPhrases = data;
         this.$store.dispatch("setUserPhrases", { userPhrases: data });
       });

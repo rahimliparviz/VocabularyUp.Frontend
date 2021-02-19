@@ -13,6 +13,10 @@ export default {
     });
   },
 
+  forgetTranslation(context, payload) {
+    context.commit('forgetTranslation', payload);
+  },
+
 
  
  

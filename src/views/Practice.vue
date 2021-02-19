@@ -1,11 +1,7 @@
 <template>
   <div class="mid-center">
     <h1>{{ type }}</h1>
-    <router-link
-        :to="{ name: 'Profile' }"
-      >
-        Back to Profile</router-link
-      >
+    <router-link :to="{ name: 'Profile' }"> Back to Profile</router-link>
 
     <div class="stack-wrapper">
       <stack ref="stack" :pages="phrasesList" :stackinit="stackinit"></stack>
@@ -14,6 +10,7 @@
       <button @click="prev" class="button">
         <i class="prev"></i><span class="text-hidden">prev</span>
       </button>
+      <span>{{ phrasesList.length }}</span>
       <button @click="next" class="button">
         <i class="next"></i> <span class="text-hidden">next</span>
       </button>
@@ -36,6 +33,17 @@ export default {
     };
   },
 
+  watch: {
+    userPhrases() {
+      this.getPhrases(this.type);
+    },
+  },
+  computed: {
+    userPhrases() {
+      return this.$store.getters.userPhrases;
+    },
+  },
+
   methods: {
     prev() {
       this.$refs.stack.$emit("prev");
@@ -44,18 +52,16 @@ export default {
       this.$refs.stack.$emit("next");
     },
     getPhrases(filter) {
-      let userPhrases = this.$store.getters.userPhrases;
       switch (filter) {
         case "known":
-          this.phrasesList = userPhrases.filter((phrase) => {
+          this.phrasesList = this.userPhrases.filter((phrase) => {
             if (phrase.numberOfRemainingRepetitions == 0) {
               return phrase;
             }
           });
           break;
         case "forgotten":
-          console.log(2);
-          this.phrasesList = userPhrases.filter((phrase) => {
+          this.phrasesList = this.userPhrases.filter((phrase) => {
             if (phrase.numberOfRemainingRepetitions > 0) {
               return phrase;
             }
@@ -64,7 +70,7 @@ export default {
         case "file":
           this.phrasesList = this.$store.getters.filePhrases;
           break;
-        default:{
+        default: {
           let params = {
             FromLanguageId: this.$store.getters.fromLanguageId,
             ToLanguageId: this.$store.getters.toLanguageId,
