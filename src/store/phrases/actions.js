@@ -13,11 +13,13 @@ export default {
     });
   },
 
-  forgetTranslation(context, payload) {
-    context.commit('forgetTranslation', payload);
+  updateCurrentUserPhrase(context, payload) {
+    context.commit('updateCurrentUserPhrase', payload);
   },
 
+  currentPhrase(context, payload) {
+    context.commit('setCurrentPhrase', payload);
+  },
 
- 
  
 };

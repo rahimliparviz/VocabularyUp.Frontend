@@ -16,17 +16,15 @@
       @webkit-transition-end="onTransitionEnd(index)"
       @transitionend="onTransitionEnd(index)"
     >
-
-      <div> <stack-card @next="next" :phrase="item.phrase" :phraseId="item.phraseId" :translation="item.translation"/></div>
-      
+      <div><stack-card ref="stackCardChild" @next="next" :phrase="item" /></div>
     </li>
   </ul>
 </template>
 <script>
 import detectPrefixes from "../helpers/detect-prefixes.js";
-import StackCard from '../components/StackCard.vue'
+import StackCard from "../components/StackCard.vue";
 export default {
- components: { StackCard },
+  components: { StackCard },
   props: {
     stackinit: {
       type: Object,
@@ -43,8 +41,8 @@ export default {
   },
   data() {
     return {
-      offsetWidth:null,
-      offsetHeight:null,
+      offsetWidth: null,
+      offsetHeight: null,
       basicdata: {
         start: {},
         end: {},
@@ -70,9 +68,7 @@ export default {
       },
     };
   },
-  created() {
-    console.log(this.pages)
-  },
+
   computed: {
     // 划出面积比例
     offsetRatio() {
@@ -93,6 +89,7 @@ export default {
     },
   },
   mounted() {
+
     // 绑定事件
     this.$on("next", () => {
       this.next();
@@ -203,6 +200,11 @@ export default {
           ? 0
           : this.temporaryData.currentPage + 1;
       // currentPage切换，整体dom进行变化，把第一层滑动置最低
+
+      let currentPhrase = this.pages[this.temporaryData.currentPage];
+      this.$store.dispatch("currentPhrase", currentPhrase);
+
+
       this.$nextTick(() => {
         this.temporaryData.poswidth = 0;
         this.temporaryData.posheight = 0;
@@ -374,7 +376,7 @@ export default {
   background: #fff;
   height: 100%;
   width: 100%;
-  border:1px solid orange;
+  border: 1px solid orange;
   border-radius: 4px;
   text-align: center;
   overflow: hidden;

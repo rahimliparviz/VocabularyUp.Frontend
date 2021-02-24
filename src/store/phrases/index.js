@@ -6,7 +6,8 @@ export default {
   state() {
     return {
       userPhrases: [],
-      filePhrases:[]
+      filePhrases:[],
+      currentPhrase:{}
     };
   },
   mutations,

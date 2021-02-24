@@ -5,7 +5,7 @@ import camelcaseKeys from 'camelcase-keys'
 
 
 // axios.defaults.baseURL ='/api';
-axios.defaults.baseURL ='http://localhost:5000/api';
+axios.defaults.baseURL = 'http://localhost:5000/api';
 
 axios.interceptors.request.use((config) => {
     const token = window.localStorage.getItem('token');
@@ -19,11 +19,11 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(undefined, error => {
 
     if (error.message === 'Network Error' && !error.response) {
-        Notification.error('Network error - make sure API is running!',2000)
+        Notification.error('Network error - make sure API is running!', 2000)
     }
-    const {status, data, config,headers} = error.response;
-    
-   
+    const { status, data, config, headers } = error.response;
+
+
     if (status === 400) {
         data.errors = camelcaseKeys(data.errors)
     }
@@ -31,37 +31,37 @@ axios.interceptors.response.use(undefined, error => {
         router.push('/notfound')
     }
     if (status === 401) {
-        Notification.warning('Password or mail is invalid',2000)
+        Notification.warning('Password or mail is invalid', 2000)
     }
     if (status === 401 && headers['www-authenticate'] === 'Bearer error="invalid_token", error_description="The token is expired"') {
         window.localStorage.removeItem('jwt');
         router.push('/')
-        Notification.warning('Your session has expired, please login again',2000)
-      }
+        Notification.warning('Your session has expired, please login again', 2000)
+    }
     // if (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id')) {
-        if (status === 400 && config.method === 'get' && data.errors) {
+    if (status === 400 && config.method === 'get' && data.errors) {
         router.push('/notfound')
     }
     if (status === 500) {
-        Notification.warning('Server error - check the terminal for more info!',2000)
+        Notification.warning('Server error - check the terminal for more info!', 2000)
     }
     throw error.response;
 })
 
-const responseBody = (response)=>response.data;
+const responseBody = (response) => response.data;
 
 
 const requests = {
-    get: (url)=> axios.get(url).then(responseBody),
-    getWithParams: (url,body)=> axios.get(url, {params:body}).then(responseBody),
-    post: (url,body)=> axios.post(url,body).then(responseBody),
-    put: (url,body)=> axios.put(url,body).then(responseBody),
-    del: (url)=> axios.delete(url).then(responseBody),
+    get: (url) => axios.get(url).then(responseBody),
+    getWithParams: (url, body) => axios.get(url, { params: body }).then(responseBody),
+    post: (url, body) => axios.post(url, body).then(responseBody),
+    put: (url, body) => axios.put(url, body).then(responseBody),
+    del: (url) => axios.delete(url).then(responseBody),
     postForm: (url, file) => {
         let formData = new FormData();
         formData.append('File', file);
         return axios.post(url, formData, {
-            headers: {'Content-type': 'multipart/form-data'}
+            headers: { 'Content-type': 'multipart/form-data' }
         }).then(responseBody)
     }
 }
@@ -86,28 +86,23 @@ const Phrase = {
 };
 
 const Auth = {
-    // list: () => requests.get(`/language`),
-    // details: (id) => requests.get(`/employees/${id}`),
     login: (creds) => requests.post('/auth/login', creds),
     register: (creds) => requests.post('/auth/register', creds),
-    // upload: (formData) => requests.post('/phrase/upload', formData, {
-    //     headers: { 'Content-type': 'multipart/form-data' }
-    // }),
-    // update: (language) => requests.put(`/language/${language.id}`, language),
-    // delete: (id) => requests.del(`/language/${id}`),
 };
 
 
 const User = {
     profile: (payload) => requests.post(`/user/user-profile`, payload),
-    userPhrases: (params) => requests.getWithParams(`/user/user-phrases`,params),
-    phrasesToLearn: (params) => requests.getWithParams('/user/phrases-to-learn',params),
+    userPhrases: (params) => requests.getWithParams(`/user/user-phrases`, params),
+    phrasesToLearn: (params) => requests.getWithParams('/user/phrases-to-learn', params),
     // details: (id) => requests.get(`/employees/${id}`),
     forgetTranslation: (data) => requests.post('/user/forget-translation', data),
-    learnPhrase: (data) => requests.post('/user/learn-phrase', data),
+    repeatPhrase: (data) => requests.post('/user/repeat-phrase', data),
+    alreadyKnownPhrase: (data) => requests.post('/user/already-known-phrase', data),
+    learnNewPhrase: (data) => requests.post('/user/learn-new-phrase', data),
     // update: (formData) =>requests.put(`/employees/${formData.get('id')}`, formData),
     // delete: (id) => requests.del(`/employees/${id}`),
-  };
+};
 
 
 

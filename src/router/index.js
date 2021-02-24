@@ -6,12 +6,7 @@ import adminRoutes from './admin-routes'
 import userRoutes from './user-routes'
 Vue.use(VueRouter)
 
-
-
-
-const routes = [...adminRoutes,...userRoutes, ...commonRoutes];
-
-// console.log(role,routes)
+const routes = [...commonRoutes, ...userRoutes, ...adminRoutes];
 
 
 const router = new VueRouter({

@@ -2,28 +2,32 @@
   <div>
     <span>{{ type }}</span>
     <div class="alert alert-primary" role="alert">
-      {{ phrase }} -- {{ phraseId }}
+      {{ phrase.phrase }}
     </div>
     <div v-if="showTranslation" class="alert alert-success" role="alert">
-      {{ translation }}
+      {{ phrase.translation }}
     </div>
-    <button v-if="!showTranslation && type != 'known'" class="btn btn-success">
+    <button
+      v-if="!showTranslation && type != 'known'"
+      class="btn btn-success"
+      @click="knownPhraseAction"
+    >
       I know
     </button>
     <button
       v-if="!showTranslation"
-      @click="shorTranslation"
+      @click="showTranslationAction"
       class="btn btn-warning"
     >
-      Show
+      Show Translation
     </button>
 
-    <div v-if="showTranslation" class="alert alert-info" role="alert">
+    <div class="alert alert-info" role="alert">
       {{ message }}
     </div>
     <button
       v-if="showTranslation"
-      @click="practiceAndNextPhrase"
+      @click="updateCurrentPhraseRepetitionCount"
       class="btn btn-warning"
     >
       Next
@@ -32,45 +36,52 @@
 </template>
 
 <script>
+import { PhraseTypeFactory } from "../factories/concrete/phraseTypes/PhraseTypeFactory";
 export default {
-  props: ["phrase", "translation", "phraseId"],
+  props: ["phrase"],
   data() {
     return {
       type: "",
-      message: "",
+      message:
+        "You will see this phrase " +
+        this.phrase.numberOfRemainingRepetitions +
+        " more times",
       numberOfRemainingRepetitions: 0,
       showTranslation: false,
     };
   },
+  computed: {
+    phraseType() {
+      return new PhraseTypeFactory(this.type);
+    },
+  },
   methods: {
-    shorTranslation() {
+    async showTranslationAction() {
       this.showTranslation = true;
 
-      let data = {
-        FromLanguageId: this.$store.getters.fromLanguageId,
-        ToLanguageId: this.$store.getters.toLanguageId,
-        PhraseId: this.phraseId,
-      };
-
-      this.$agent.User.forgetTranslation(data).then((response) => {
-        if (response.isSuccess) {
-          this.message = response.message;
-          this.numberOfRemainingRepetitions =
-            response.numberOfRemainingRepetitions;
-          this.showTranslation = true;
-        }
-      });
+      let result = await this.phraseType.showTranslationAction();
+      if (result.isSuccess) {
+        this.message = result.message;
+        this.numberOfRemainingRepetitions = result.data;
+      }
     },
-    practiceAndNextPhrase() {
+    updateCurrentPhraseRepetitionCount() {
       this.showTranslation = false;
 
-      let payload = {
-        phraseId: this.phraseId,
-        numberOfRemainingRepetitions: this.numberOfRemainingRepetitions,
-      };
-      this.$store.dispatch("forgetTranslation", payload);
+      this.phraseType.updateCurrentPhraseRepetitionCount(
+        this.numberOfRemainingRepetitions
+      );
 
       this.$emit("next");
+    },
+    async knownPhraseAction() {
+      let result = await this.phraseType.knownPhraseAction();
+      if (result.isSuccess) {
+        this.message = result.message;
+        this.phraseType.updateCurrentPhraseRepetitionCount(result.data);
+        this.$emit("next");
+      }
+
     },
   },
   created() {

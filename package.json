@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.17.3",
     "camelcase-keys": "^6.2.2",
     "core-js": "^3.6.5",
+    "es6-interface": "^3.1.4",
     "jwt-decode": "^3.1.2",
     "noty": "^3.2.0-beta",
     "sweetalert2": "^10.10.0",

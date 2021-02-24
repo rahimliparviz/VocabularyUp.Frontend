@@ -14,6 +14,7 @@ import '@fortawesome/fontawesome-free/js/all.js'
 Vue.config.productionTip = false
 Vue.prototype.$agent = agent
 Vue.prototype.$swal = swal
+// console.log(this.agent);
 
 Vue.component('base-card', () => import('./components/ui/BaseCard.vue'))
 Vue.component('base-button', () => import('./components/ui/BaseButton.vue'))

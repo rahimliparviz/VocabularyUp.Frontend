@@ -37,6 +37,11 @@ export default {
     userPhrases() {
       this.getPhrases(this.type);
     },
+    phrasesList(current, prev) {
+      if (JSON.stringify(current) !== JSON.stringify(prev)) {
+        this.$store.dispatch("currentPhrase", current[0]);
+      }
+    },
   },
   computed: {
     userPhrases() {
@@ -51,7 +56,7 @@ export default {
     next() {
       this.$refs.stack.$emit("next");
     },
-    getPhrases(filter) {
+    async getPhrases(filter) {
       switch (filter) {
         case "known":
           this.phrasesList = this.userPhrases.filter((phrase) => {
@@ -59,16 +64,21 @@ export default {
               return phrase;
             }
           });
+          // currentPhrase dispatch hissesini yaxsilasdir
+          // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
+
           break;
         case "forgotten":
           this.phrasesList = this.userPhrases.filter((phrase) => {
             if (phrase.numberOfRemainingRepetitions > 0) {
               return phrase;
             }
+            // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
           });
           break;
         case "file":
           this.phrasesList = this.$store.getters.filePhrases;
+          // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
           break;
         default: {
           let params = {
@@ -76,9 +86,14 @@ export default {
             ToLanguageId: this.$store.getters.toLanguageId,
             PhrasesCount: 15,
           };
-          this.$agent.User.phrasesToLearn(params).then((data) => {
-            this.phrasesList = data;
-          });
+          let newPhrases = await this.$agent.User.phrasesToLearn(params);
+          this.phrasesList = newPhrases;
+
+          // this.$agent.User.phrasesToLearn(params).then((data) => {
+          //   this.phrasesList = data;
+
+          // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
+          // });
         }
       }
     },
@@ -86,6 +101,11 @@ export default {
   created() {
     this.type = this.$route.params.type;
     this.getPhrases(this.type);
+
+    // let payload = this.pages[0];
+    //        console.log( this.pages[0])
+    //        console.log(payload)
+    //        console.log(this.pages)
   },
 };
 </script>

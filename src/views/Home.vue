@@ -1,25 +1,26 @@
 
-<!--<template>
+<template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <h1>Salam</h1>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+// import HelloWorld from '@/components/HelloWorld.vue'
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+// export default {
+//   name: 'Home',
+//   components: {
+//     HelloWorld
+//   }
+// }
 </script>
--->
 
-<template>
+
+<!--<template>
   <div class="mid-center">
     <div class="stack-wrapper">
       <stack ref="stack" :pages="someList" :stackinit="stackinit"></stack>
@@ -161,6 +162,7 @@ export default {
   display: block;
 }
 </style>
+-->
 
 
 

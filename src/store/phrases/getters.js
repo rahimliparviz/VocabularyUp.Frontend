@@ -5,5 +5,8 @@ export default {
   },
   filePhrases(state) {
     return state.filePhrases;
+  },
+  currentPhrase(state){
+    return state.currentPhrase
   }
 };
