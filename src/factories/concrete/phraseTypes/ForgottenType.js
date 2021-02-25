@@ -32,7 +32,11 @@ export default class Forgotten {
       PhraseId: store.getters.currentPhrase.phraseId,
     };
 
-    return await agent.User.repeatPhrase(data);
+    let result = await agent.User.repeatPhrase(data);
+    this.updateCurrentPhraseRepetitionCount(result.data);
+
+    return result
+
 
   }
 }

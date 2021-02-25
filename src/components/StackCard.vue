@@ -77,8 +77,6 @@ export default {
     async knownPhraseAction() {
       let result = await this.phraseType.knownPhraseAction();
       if (result.isSuccess) {
-        this.message = result.message;
-        this.phraseType.updateCurrentPhraseRepetitionCount(result.data);
         this.$emit("next");
       }
 

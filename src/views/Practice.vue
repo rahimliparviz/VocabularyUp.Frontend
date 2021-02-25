@@ -88,6 +88,8 @@ export default {
           };
           let newPhrases = await this.$agent.User.phrasesToLearn(params);
           this.phrasesList = newPhrases;
+          this.$store.dispatch("setNewPhrases", { newPhrases: newPhrases });
+
 
           // this.$agent.User.phrasesToLearn(params).then((data) => {
           //   this.phrasesList = data;

@@ -13,6 +13,16 @@ export default {
     });
   },
 
+  setNewPhrases(context, payload) {
+    context.commit('setNewPhrases', {
+      newPhrases: payload.newPhrases
+    });
+  },
+
+  updateNewPhrases(context, payload) {
+    context.commit('updateNewPhrases', payload);
+  },
+
   updateCurrentUserPhrase(context, payload) {
     context.commit('updateCurrentUserPhrase', payload);
   },

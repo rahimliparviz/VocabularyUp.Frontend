@@ -6,6 +6,9 @@ export default {
   filePhrases(state) {
     return state.filePhrases;
   },
+  newPhrases(state) {
+    return state.newPhrases;
+  },
   currentPhrase(state){
     return state.currentPhrase
   }

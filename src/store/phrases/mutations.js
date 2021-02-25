@@ -7,6 +7,14 @@ export default {
   setFilePhrases(state, payload) {
     state.filePhrases = payload.filePhrases;
   },
+  setNewPhrases(state, payload) {
+    state.newPhrases = payload.newPhrases;
+
+  },
+  updateNewPhrases(state, payload) {
+    let index = state.newPhrases.findIndex(x => x.phraseId === payload.phraseId);
+    state.newPhrases.splice(index, 1)
+  },
   updateCurrentUserPhrase(state,payload){
 
     let index = state.userPhrases.findIndex(x => x.phraseId === payload.phraseId);
