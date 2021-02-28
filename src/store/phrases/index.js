@@ -7,8 +7,13 @@ export default {
     return {
       userPhrases: [],
       newPhrases: [],
+      newPhrasesCount: 15,
+      newPhrasesSkipCount:15,
+      lastKnownPhraseId:null,
+      newLoadedPhrases:[],
       filePhrases:[],
-      currentPhrase:{}
+      currentPhrase:{},
+      
     };
   },
   mutations,

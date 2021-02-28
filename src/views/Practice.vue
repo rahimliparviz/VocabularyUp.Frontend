@@ -37,15 +37,23 @@ export default {
     userPhrases() {
       this.getPhrases(this.type);
     },
-    phrasesList(current, prev) {
-      if (JSON.stringify(current) !== JSON.stringify(prev)) {
-        this.$store.dispatch("currentPhrase", current[0]);
-      }
+    newLoadedPhrases(current) {
+      let lastKnownPhraseId = this.$store.getters.lastKnownPhraseId;
+
+      console.log(lastKnownPhraseId);
+      let phrasesWithoutLastKnown = this.phrasesList.filter((phrase) => {
+        return phrase.phraseId != lastKnownPhraseId;
+      });
+
+      this.phrasesList = [...phrasesWithoutLastKnown, ...current];
     },
   },
   computed: {
     userPhrases() {
       return this.$store.getters.userPhrases;
+    },
+    newLoadedPhrases() {
+      return this.$store.getters.getNewLoadedPhrases;
     },
   },
 
@@ -57,45 +65,41 @@ export default {
       this.$refs.stack.$emit("next");
     },
     async getPhrases(filter) {
+      console.log(filter);
       switch (filter) {
-        case "known":
+        case "known": {
           this.phrasesList = this.userPhrases.filter((phrase) => {
             if (phrase.numberOfRemainingRepetitions == 0) {
               return phrase;
             }
           });
-          // currentPhrase dispatch hissesini yaxsilasdir
-          // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
+          this.$store.dispatch("currentPhrase", this.phrasesList[0]);
 
           break;
-        case "forgotten":
+        }
+        case "forgotten": {
           this.phrasesList = this.userPhrases.filter((phrase) => {
             if (phrase.numberOfRemainingRepetitions > 0) {
               return phrase;
             }
-            // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
           });
+          this.$store.dispatch("currentPhrase", this.phrasesList[0]);
+
           break;
+        }
         case "file":
           this.phrasesList = this.$store.getters.filePhrases;
-          // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
+          this.$store.dispatch("currentPhrase", this.phrasesList[0]);
           break;
         default: {
           let params = {
             FromLanguageId: this.$store.getters.fromLanguageId,
             ToLanguageId: this.$store.getters.toLanguageId,
-            PhrasesCount: 15,
+            PhrasesCount: this.$store.getters.getNewPhrasesCount,
           };
           let newPhrases = await this.$agent.User.phrasesToLearn(params);
           this.phrasesList = newPhrases;
-          this.$store.dispatch("setNewPhrases", { newPhrases: newPhrases });
-
-
-          // this.$agent.User.phrasesToLearn(params).then((data) => {
-          //   this.phrasesList = data;
-
-          // this.$store.dispatch("currentPhrase", this.phrasesList[0]);
-          // });
+          this.$store.dispatch("currentPhrase", this.phrasesList[0]);
         }
       }
     },
@@ -103,11 +107,6 @@ export default {
   created() {
     this.type = this.$route.params.type;
     this.getPhrases(this.type);
-
-    // let payload = this.pages[0];
-    //        console.log( this.pages[0])
-    //        console.log(payload)
-    //        console.log(this.pages)
   },
 };
 </script>
@@ -154,7 +153,6 @@ export default {
   line-height: 0;
   font-size: 0;
   vertical-align: middle;
-  -webkit-transform: rotate(45deg);
   left: -5px;
   top: 2px;
   position: relative;
@@ -165,7 +163,6 @@ export default {
   width: 20px;
   height: 5px;
   background: rgb(129, 212, 125);
-  -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
 }
 .button .prev {
   display: inline-block;
@@ -175,7 +172,6 @@ export default {
   line-height: 0;
   font-size: 0;
   vertical-align: middle;
-  -webkit-transform: rotate(45deg);
 }
 .button .prev:after {
   content: "/";
@@ -183,7 +179,6 @@ export default {
   width: 20px;
   height: 5px;
   background: rgb(230, 104, 104);
-  -webkit-transform: rotate(-90deg);
 }
 .controls .text-hidden {
   position: absolute;

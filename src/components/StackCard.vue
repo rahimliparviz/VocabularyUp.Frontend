@@ -2,7 +2,7 @@
   <div>
     <span>{{ type }}</span>
     <div class="alert alert-primary" role="alert">
-      {{ phrase.phrase }}
+      {{ phrase.phrase }} --- {{ phrase.phraseId }}
     </div>
     <div v-if="showTranslation" class="alert alert-success" role="alert">
       {{ phrase.translation }}
@@ -27,7 +27,7 @@
     </div>
     <button
       v-if="showTranslation"
-      @click="updateCurrentPhraseRepetitionCount"
+      @click="updateCurrentUserPhrase"
       class="btn btn-warning"
     >
       Next
@@ -38,7 +38,7 @@
 <script>
 import { PhraseTypeFactory } from "../factories/concrete/phraseTypes/PhraseTypeFactory";
 export default {
-  props: ["phrase"],
+  props: ["phrase", "index"],
   data() {
     return {
       type: "",
@@ -65,10 +65,10 @@ export default {
         this.numberOfRemainingRepetitions = result.data;
       }
     },
-    updateCurrentPhraseRepetitionCount() {
+    updateCurrentUserPhrase() {
       this.showTranslation = false;
 
-      this.phraseType.updateCurrentPhraseRepetitionCount(
+      this.phraseType.updateCurrentUserPhrase(
         this.numberOfRemainingRepetitions
       );
 
@@ -79,7 +79,6 @@ export default {
       if (result.isSuccess) {
         this.$emit("next");
       }
-
     },
   },
   created() {

@@ -15,7 +15,7 @@ export default class Forgotten {
 
   }
 
-  updateCurrentPhraseRepetitionCount(numberOfRemainingRepetitions) {
+  updateCurrentUserPhrase(numberOfRemainingRepetitions) {
     let payload = {
       phraseId: store.getters.currentPhrase.phraseId,
       numberOfRemainingRepetitions: numberOfRemainingRepetitions,
@@ -25,6 +25,7 @@ export default class Forgotten {
 
   async knownPhraseAction() {
 
+    console.log(store.getters.currentPhrase)
 
     let data = {
       FromLanguageId: store.getters.fromLanguageId,
@@ -32,8 +33,10 @@ export default class Forgotten {
       PhraseId: store.getters.currentPhrase.phraseId,
     };
 
+    console.log(data)
+
     let result = await agent.User.repeatPhrase(data);
-    this.updateCurrentPhraseRepetitionCount(result.data);
+    this.updateCurrentUserPhrase(result.data);
 
     return result
 

@@ -11,20 +11,39 @@ export default {
     state.newPhrases = payload.newPhrases;
 
   },
-  updateNewPhrases(state, payload) {
+  removeCurrentPhraseFromNewPhrases(state, payload) {
     let index = state.newPhrases.findIndex(x => x.phraseId === payload.phraseId);
     state.newPhrases.splice(index, 1)
   },
-  updateCurrentUserPhrase(state,payload){
+  setNewPhrasesCount(state, payload){
+    state.newPhrasesCount = payload.newPhrasesCount;
+
+  },
+  setNewPhrasesSkipCount(state, payload) {
+    state.newPhrasesSkipCount = payload.newPhrasesSkipCount;
+  },
+
+  loadNewPhrases(state, payload) {
+    // let allNewPhrases = [...state.newPhrases,...payload.newPhrases]
+    // console.log(allNewPhrases)
+    // Vue.set(state, "newPhrases", allNewPhrases);
+    state.newLoadedPhrases = payload.newLoadedPhrases;
+  },
+  updateCurrentUserPhrase(state, payload) {
 
     let index = state.userPhrases.findIndex(x => x.phraseId === payload.phraseId);
-    Vue.set(state.userPhrases, index, { ...state.userPhrases[index], numberOfRemainingRepetitions: payload.numberOfRemainingRepetitions });
+    Vue.set(state.userPhrases, index, { ...state.userPhrases[index], ...payload });
 
   }
-,
-  setCurrentPhrase(state,payload){
-    // console.log(payload)
+  ,
+  setCurrentPhrase(state, payload) {
     state.currentPhrase = payload;
 
+  },
+  lastKnownPhraseId(state, payload) {
+    state.lastKnownPhraseId = payload.lastKnownPhraseId;
+
   }
+
+  
 };

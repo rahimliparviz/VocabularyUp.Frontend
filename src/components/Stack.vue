@@ -16,7 +16,7 @@
       @webkit-transition-end="onTransitionEnd(index)"
       @transitionend="onTransitionEnd(index)"
     >
-      <div><stack-card ref="stackCardChild" @next="next" :phrase="item" /></div>
+      <div><stack-card ref="stackCardChild" @next="next" :phrase="item" :index="index"/></div>
     </li>
   </ul>
 </template>

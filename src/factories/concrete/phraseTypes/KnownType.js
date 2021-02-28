@@ -15,7 +15,7 @@ export default class KnownType {
         return await agent.User.forgetTranslation(data);
     }
 
-    updateCurrentPhraseRepetitionCountpetitionCount(numberOfRemainingRepetitions) {
+    updateCurrentUserPhrase(numberOfRemainingRepetitions) {
         let payload = {
             phraseId: store.getters.currentPhrase.phraseId,
             numberOfRemainingRepetitions: numberOfRemainingRepetitions,
